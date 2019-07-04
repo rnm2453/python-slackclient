@@ -58,9 +58,4 @@ The Way to Store Data
 }
 
 """
-"""
-import certifi
-from onboarding import Onboarding
-
-"""
 
