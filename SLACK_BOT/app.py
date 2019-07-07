@@ -1,58 +1,35 @@
-import os
 import logging
 import slack
 import ssl as ssl_lib
+import os
 import certifi
 from lists import messageList
-from Classes.onMessage import OnMessage
-from Classes.onBoarding import OnBoarding
+from message_producer import MessageProducer
 
 
 sent_messages = {}
 
-def start_onBoarding(web_client: slack.WebClient, user_id: str, channel: str):
-   
-    onBoarding = OnBoarding(channel)  # Create a new onboarding.
-    message = onBoarding.get_message_payload() # Get the onboarding message payload
-    response = web_client.chat_postMessage(**message) # Post the onboarding message in Slack
-    onBoarding.timestamp = response["ts"] # Capture Time for later use
+def process_message(web_client: slack.WebClient, user_id: str, channel: str, text: str):   
+    producer = MessageProducer(channel)  
+    message_handler = producer.get_message_type(text) # Get the onboarding message payload
+    if message_handler is not None:
+        message = message_handler.get_message()
+        response = web_client.chat_postMessage(**message) # Post the onboarding message in Slack
+        message_handler.timestamp = response["ts"] # Capture Time for later use
 
-    # Store the message sent in onboarding_tutorials_sent
-    if channel not in sent_messages:
-        sent_messages[channel] = {}
-    sent_messages[channel][user_id] = onBoarding
+        # Store the message sent in onboarding_tutorials_sent
+        if channel not in sent_messages:
+            sent_messages[channel] = {}
+        sent_messages[channel][user_id] = message_handler
 
-def start_onMessage(web_client: slack.WebClient, user_id: str, channel: str, msg: str):
-       
-    onMessage = OnMessage(channel, msg)
-    message =  onMessage.get_message_payload()
-    response = web_client.chat_postMessage(**message)
-    onMessage.timestamp = response["ts"]
-
-    # Store the message sent in onboarding_tutorials_sent
-    if channel not in sent_messages:
-        sent_messages[channel] = {}
-    sent_messages[channel][user_id] = onMessage
-
-# ============== Message Events ============= #
-# When a user sends a DM, the event type will be 'message'.
-# Here we'll link the update_share callback to the 'message' event.
 @slack.RTMClient.run_on(event="message")
 def message(**payload):
-    """Display the onboarding welcome message after receiving a message that contains "start" """
     data = payload["data"]
     web_client = payload["web_client"]
     channel_id = data.get("channel")
     user_id = data.get("user")
     text = data.get("text")
-
-    
-    if text and text.lower() == "start":
-        return start_onBoarding(web_client, user_id, channel_id)
-
-    for var in messageList:
-        if text and text.lower() == var:
-            return start_onMessage(web_client, user_id, channel_id, messageList[var])
+    return process_message(web_client, user_id, channel_id,text )
             
 
 if __name__ == "__main__":
