@@ -17,5 +17,5 @@ The Folbowing bot can-
   
   
   
-  
-  https://glitch.com/edit/#!/botkit-slack
+server:
+https://serveo.net/
