@@ -22,7 +22,6 @@ def process_message(web_client: slack.WebClient, user_id: str, channel: str, tex
             sent_messages[channel] = {}
         sent_messages[channel][user_id] = message_handler
 
-
 # On Event Message
 @slack.RTMClient.run_on(event="message")
 def message(**payload):

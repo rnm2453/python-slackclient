@@ -39,14 +39,12 @@ class MessageProducer:
 
    #Generic Message Constructor
     def message(self, **payload):
-        print("mes")
         if self.channel_type == "dm":
             return self.handle_response(payload['input'])
 
         
     #@ Message Constructor
     def app_mention(self, **payload):
-        print(",en")
         if self.channel_type == "channel":
             #Check if user @ the right bot
             if payload["botname"] == "<@UKW4RAK1P>": ##need to write get bot id 
