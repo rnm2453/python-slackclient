@@ -10,19 +10,34 @@ class MessageProducer:
     def __init__(self, channel):
         self.channel = channel
 
-    # Assorts the type of response message
-    def get_message_type(self, input:str):
+        if self.channel[0] == 'D':
+            self.channel_type = 'dm'
+            
+        if self.channel[0] == 'C':
+            self.channel_type = "channel"
 
-        # onboarding type
-        if input and input.lower() == 'show onboarding message':
-            return Onboarding(self.channel)
+    # Assorts the type of response message
+    def get_message_type(self, input: str):
+
+        if self.channel_type == 'channel':
+            # onboarding type
+            if input and input.lower() == '@pythonbot show onboarding message':
+                return Onboarding(self.channel)
         
+        
+        if self.channel_type == 'dm':
+
+            if input and input.lower() == 'show onboarding message':
+                return Onboarding(self.channel)
+            
         # generic message type
-        for regex, func in messageList.items():
+        for regex, func in messageList:
             match = re.match(regex, input)
             if match and input:
                 payload = match.groupdict()
-                return func(self.channel, **payload)
+                print(payload)
+                return func(self.channel, self.channel_type, **payload)
+            
 
 """
         for i in range(len(messageList)):

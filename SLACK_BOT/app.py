@@ -10,6 +10,7 @@ sent_messages = {}
 
 def process_message(web_client: slack.WebClient, user_id: str, channel: str, text: str):   
     producer = MessageProducer(channel)  
+    print(producer.channel)
     message_handler = producer.get_message_type(text) # Get the onboarding message payload
     if message_handler is not None:
         message = message_handler.get_message()
@@ -21,6 +22,18 @@ def process_message(web_client: slack.WebClient, user_id: str, channel: str, tex
             sent_messages[channel] = {}
         sent_messages[channel][user_id] = message_handler
 
+
+@slack.RTMClient.run_on(event="app_mention")
+def mention(**payload):
+    data = payload["data"]
+    web_client = payload["web_client"]
+    channel_id = data.get("channel")
+    user_id = data.get("user")
+    text = data.get("text")
+    print(text)
+    if (user_id is not None):
+        return process_message(web_client, user_id, channel_id,text )
+
 @slack.RTMClient.run_on(event="message")
 def message(**payload):
     data = payload["data"]
@@ -28,8 +41,9 @@ def message(**payload):
     channel_id = data.get("channel")
     user_id = data.get("user")
     text = data.get("text")
-    return process_message(web_client, user_id, channel_id,text )
-            
+    print(text)
+    if (user_id is not None):
+        return process_message(web_client, user_id, channel_id,text )
 
 if __name__ == "__main__":
     ssl_context = ssl_lib.create_default_context(cafile=certifi.where())

@@ -1,6 +1,4 @@
-<<<<<<< HEAD
 slackclient>=2.0.0
-=======
-slackclient>=2.0.0
+slackeventsapi>=0.1
 >>>>>>> 4ade514413be5d69bc7cd0abeb4ee7d6d18ecc6d
 certifi
