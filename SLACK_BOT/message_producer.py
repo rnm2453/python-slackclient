@@ -2,20 +2,35 @@ import re
 import random
 from Type.message import Message
 
+"""
+To find your bot's id, you need to send a message where you mention him and then print the payload text.
+you will see that slack automatically swaps the botname to a combination of letters.
+"""
+bot_id = "<@UKW4RAK1P>" 
+
 #This Object recives message an assorts them to different classes
 class MessageProducer:
-    def __init__(self, channel):
+    def __init__(self, channel, thread: tuple):
         self.channel = channel
+        self.channel_type = ''
+        self.ts = thread[0], #timestamp
+        self.thread_ts = thread[1], #thread timestamp
+        self.reply_users_count = thread[2] # how many users in thread
+        self.in_thread = False
         self.input_list =  ( # RegEx Options for possible input options
-            ("(?P<input>[a-zA-Z ]+)", self.message),
-            ("^(?P<botname>[@<>0-9a-zA-Z]+)(?P<input>[a-zA-Z ]+)", self.app_mention),
+            ("^(?P<input>[a-zA-Z-@ ]+)$", self.message),
+            ("^(?P<botname>[@<>0-9a-zA-Z]+)(?P<input>[a-zA-Z ]+)$", self.app_mention),
         )
+        if self.ts == self.thread_ts:
+            self.in_thread = True
 
         if self.channel[0] == 'D':
             self.channel_type = 'dm'
             
         if self.channel[0] == 'C':
             self.channel_type = "channel"
+        print(self.in_thread)
+        print(self.reply_users_count)
 
     # Assorts the type of response message
     def get_message_type(self, input: str):
@@ -28,7 +43,6 @@ class MessageProducer:
     
     def handle_response(self, input):
         options = []
-
         if isincluded(input, "#hello#hi#hey#howdy#Hello#Hey#Hi#Howdy"):
             options = ["Hello how are you?", "Hey There, Whats up?", "Yooo, How are you doing today" ]
             return Message(self.channel, random.choice(options))
@@ -39,17 +53,29 @@ class MessageProducer:
 
    #Generic Message Constructor
     def message(self, **payload):
+        print("message")
         if self.channel_type == "dm":
             return self.handle_response(payload['input'])
 
         
     #@ Message Constructor
     def app_mention(self, **payload):
+        print("app_mention")
         if self.channel_type == "channel":
+            if self.reply_users_count <= 2:
+                return Message(self.channel, "Only the two of us are in this thread, please dont @ me")
             #Check if user @ the right bot
-            if payload["botname"] == "<@UKW4RAK1P>": ##need to write get bot id 
+            if payload["botname"] == bot_id: ##need to write get bot id 
                 return self.handle_response(payload['input'])
-        if self.channel_type == 'dm':    
+     
+        if self.channel_type == 'dm':  
+            # in a thread with other people  
+            if self.in_thread and self.reply_users_count > 2:
+                return self.handle_response(payload['input'])
+
+            elif self.reply_users_count <= 2:
+                return Message(self.channel, "Only the two of us are in this thread, please dont @ me")
+            #regular message(not in thread)
             return Message(self.channel, "This is a private conversation, you dont need to @ me")
 
 
@@ -90,13 +116,3 @@ def isincluded(input, txt):
 
 
 
-
-#@ Message Constructor
-def app_mention(channel, channel_type, **payload):
-    if channel_type == "channel":
-        #Check if user @ the right bot
-        if payload["botname"] == "<@UKW4RAK1P>": ##need to write get bot id 
-            return handle_message(payload["input"], channel)
-
-    if channel_type == 'dm':    
-        return Message(channel, "This is a private conversation, you dont need to @ me")
