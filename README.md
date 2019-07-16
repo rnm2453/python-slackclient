@@ -13,3 +13,10 @@ i used this tutorial as a base and i reccomend to check it before viewing the re
 
 The Folbowing bot can-
   listen to messages and have multiple replies
+  
+  
+  
+  
+server:
+https://serveo.net/
+https://realpython.com/getting-started-with-the-slack-api-using-python-and-flask/
