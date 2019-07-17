@@ -25,9 +25,10 @@ What Can The Following Bot Do:
  =======
 
  <code>
-  #NOTE: this code only recives the data, it dosen't do with it anything afterwards
+  """
+  NOTE: this code only recives the data, it dosen't do with it anything afterwards
   #The you can use with the RTM can be seen in the link bellow
-  
+  """
   @slack.RTMClient.run_on(event="message")
   def message(**payload):
     # Get data from message Payload
@@ -38,7 +39,7 @@ What Can The Following Bot Do:
     text = data.get("text")
   
   #Runs The Application  
-  if __name__ == "__main__":
+  if \__name__ == "\__main__":
     ssl_context = ssl_lib.create_default_context(cafile=certifi.where()) # Creates Connecton Object
     slack_token = os.environ["SLACK_BOT_TOKEN"] # Fetchs The Slack OAuth Token From The Enviormental Variables
     rtm_client = slack.RTMClient(token=slack_token, ssl=ssl_context) # Creates The Connection With The Bot's Credentials
@@ -47,7 +48,7 @@ What Can The Following Bot Do:
  
  ''INSERT LINK""
  So what excactly is the Happening Here?.
- The Messy "__main___" bit Allows The RTM API to send a stream of events to the Web Api
+ The Messy "\__main___" bit Allows The RTM API to send a stream of events to the Web Api
  After we setup the RTM connection to our app, we can use the [Real Time Client(RTM)] to listen to events.
  Each Event recives a payload, this payload contains all the data recived form the Websocket regards to the event.
  
