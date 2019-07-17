@@ -25,7 +25,7 @@ What Can The Following Bot Do:
  Listening To Events:
  =======
 
- <code>
+ <code>'''
   """
   NOTE: this code only recives the data, it dosen't do with it anything afterwards
   #The you can use with the RTM can be seen in the link bellow
@@ -45,7 +45,7 @@ What Can The Following Bot Do:
     slack_token = os.environ["SLACK_BOT_TOKEN"] # Fetchs The Slack OAuth Token From The Enviormental Variables
     rtm_client = slack.RTMClient(token=slack_token, ssl=ssl_context) # Creates The Connection With The Bot's Credentials
     rtm_client.start() # Requests Connection with the Web Api
- </code>
+ '''</code>
  
  ''INSERT LINK""
  So what excactly is the Happening Here?.
