@@ -10,27 +10,27 @@ bot_id = "<@UKW4RAK1P>"
 
 #This Object recives message an assorts them to different classes
 class MessageProducer:
-    def __init__(self, channel, thread: tuple):
+    def __init__(self, channel, thread_data : dict):
         self.channel = channel
-        self.channel_type = ''
-        self.ts = thread[0], #timestamp
-        self.thread_ts = thread[1], #thread timestamp
-        self.reply_users_count = thread[2] # how many users in thread
-        self.in_thread = False
+        self.channel_type = self.get_platform()
+        self.in_thread = thread_data["in_thread"]
+        self.reply_users_count = thread_data["reply_users_count"]
         self.input_list =  ( # RegEx Options for possible input options
             ("^(?P<input>[a-zA-Z-@ ]+)$", self.message),
             ("^(?P<botname>[@<>0-9a-zA-Z]+)(?P<input>[a-zA-Z ]+)$", self.app_mention),
+            ("(?P<input>[:^_a-z]+)", self.reaction_added), #dm
+            ("(?P<botname>[@<>0-9a-zA-Z]+)(?P<input>[:^_a-z ]+)", self.reaction_added) #channel
+        
         )
-        if self.ts == self.thread_ts:
-            self.in_thread = True
+    
 
+    #finds if dm or channel
+    def get_platform(self):
         if self.channel[0] == 'D':
-            self.channel_type = 'dm'
+            return 'dm'
             
         if self.channel[0] == 'C':
-            self.channel_type = "channel"
-        print(self.in_thread)
-        print(self.reply_users_count)
+            return "channel"
 
     # Assorts the type of response message
     def get_message_type(self, input: str):
@@ -53,31 +53,43 @@ class MessageProducer:
 
    #Generic Message Constructor
     def message(self, **payload):
-        print("message")
+
         if self.channel_type == "dm":
             return self.handle_response(payload['input'])
+                
+        elif self.channel_type == "channel":
+            if self.in_thread == True:
+                if self.reply_users_count <= 2:
+                   return self.handle_response(payload['input'])
 
-        
+       
     #@ Message Constructor
     def app_mention(self, **payload):
-        print("app_mention")
-        if self.channel_type == "channel":
-            if self.reply_users_count <= 2:
-                return Message(self.channel, "Only the two of us are in this thread, please dont @ me")
-            #Check if user @ the right bot
-            if payload["botname"] == bot_id: ##need to write get bot id 
-                return self.handle_response(payload['input'])
-     
-        if self.channel_type == 'dm':  
-            # in a thread with other people  
-            if self.in_thread and self.reply_users_count > 2:
-                return self.handle_response(payload['input'])
 
-            elif self.reply_users_count <= 2:
-                return Message(self.channel, "Only the two of us are in this thread, please dont @ me")
-            #regular message(not in thread)
+        if self.channel_type == 'dm':  
             return Message(self.channel, "This is a private conversation, you dont need to @ me")
 
+        elif self.channel_type == "channel":
+            if payload["botname"] == bot_id: 
+                if self.in_thread == True:
+                    if self.reply_users_count <= 2:
+                        return Message(self.channel, "We are the only in this thread alone, please dont @ me")
+                    else:
+                        return self.handle_response(payload['input'])
+                else:
+                    return self.handle_response(payload['input'])
+     
+    def reaction_added(self, **payload):
+        
+        if self.channel_type == "dm":
+            print("dm")
+            return Message(self.channel, ":smile:")
+
+        elif self.channel_type == "channel":
+            
+            if payload.get("botname") == bot_id:
+                print("channel")
+                return Message(self.channel, ":hushed:")
 
   
 
