@@ -65,7 +65,7 @@ There are many ways to structure a bot code, but this is the one i used
 Project Files
 =======
 The Project Consists of:
-
+```
 | python-slackclient
 |── SLACK_BOT
 |   |── app.py                        # Application Page
@@ -79,18 +79,18 @@ The Project Consists of:
 |   |── README.md                     # README file
 |   └── ...
 └── ...
-
+```
 ###### Python File's. What should I change? purpose
- *app.py- listens to different RTM events and runs the application. can add/remove events
- *message_producer.py- recives differnt inputs and creates outputs respectavly. may need to change depends on the events
- *message.py- a generic message constructor. No need to Change 
- *onboarding.py- a onboarding message. Do as you wish, its your bot and you messages 
+ * app.py- listens to different RTM events and runs the application. can add/remove events
+ * message_producer.py- recives differnt inputs and creates outputs respectavly. may need to change depends on the events
+ * message.py- a generic message constructor. No need to Change 
+ * onboarding.py- a onboarding message. Do as you wish, its your bot and you messages 
  *There is really nothing else in this project if you followed the installation tutorial already
- *To Create Messages with different layouts you need to create a new file and follow Slack's 'Message Block layout" page
+ * To Create Messages with different layouts you need to create a new file and follow Slack's 'Message Block layout" page
  
 
   [Real Time Client(RTM)]: https://api.slack.com/rtm/  "Real Time Client(RTM)"
   [Slack Python Onboarding Tutorial]: https://github.com/rnm2453/python-slackclient-1/tree/master/tutorial  "Slack Python Onboarding Tutorial"
   [For Windows]: https://helpdeskgeek.com/how-to/create-custom-environment-variables-in-windows "For Windows"
   [For Python]: https://stackoverflow.com/questions/5971312/how-to-set-environment-variables-in-python "For Python"
-  [Message Block layout] https://api.slack.com/reference/messaging/blocks "Message Block layout"
+  [Message Block layout]: https://api.slack.com/reference/messaging/blocks "Message Block layout"
