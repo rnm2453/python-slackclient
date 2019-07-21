@@ -13,10 +13,10 @@ class Message:
         return self.username
 
     #Retrun The Messagee
-    def get_message(self, thread_data : dict):
+    def get_message(self, attachments : dict):
         return {
-            "ts": thread_data["ts"],
-            "thread_ts" : thread_data["thread_ts"],
+            "ts": attachments["ts"],
+            "thread_ts" : attachments["thread_ts"],
             "channel": self.channel,
             "username": self.username,
             "icon_emoji": self.icon_emoji,
