@@ -5,12 +5,12 @@ Slack Bot Using Slack v2 And Python
 ========
 
 This is a Slack v2.x Bot Project using the [Real Time Client(RTM)] API written by Slack.
-To Create the application and install all of the requirments I followed the [Slack Python Onboarding Tutorial]
+To Create the application and install all of the requirments I followed the *[Slack Python Onboarding Tutorial]*
 
 ###### More Setup:
-1.Remeber to follow the [Slack Python Onboarding Tutorial] to create the application.
-2.Create an Enviormental Variable That Contains The Bot's OAuth Acsess Token.
-3.The Token's format: xoxb-\*\*\*\*\*\*\*\*\*\*\*\*\-\*\*\*\*\*\*\*\*\*\*\*\*\-\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*.
+1. Remeber to follow the [Slack Python Onboarding Tutorial] to create your application.
+2. Create an Enviorment Variable That Contains The Bot's OAuth Acsess Token. a Quick Google search should teach you how to do it. but if you are to lasy follow this [For Windows] or this [For Python] tutorial
+3. Please keep in mind the the Token format is: xoxb-\*\*\*\*\*\*\*\*\*\*\*\*\-\*\*\*\*\*\*\*\*\*\*\*\*\-\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*.
 4.I named it **'SLACK_BOT_TOKEN'**.
 
 What Can The Following Bot Do:
@@ -43,7 +43,7 @@ What Can The Following Bot Do:
  ```
  
  ###### So what excactly is the Happening Here?.
- The Messy "\__main___" bit Allows The [Real Time Client(RTM)] to send a stream of events to the Web Api.
+ The Messy "\_\__main___" bit Allows The [Real Time Client(RTM)] to send a stream of events to the Web Api.
  This is the most complicated part and you dont need to fully understand it to continue creating your bot.
  After we setup the RTM connection to our app, we can use the [Real Time Client(RTM)] to listen to events.
  Each Event recives a payload, the payload contains all the data recived from the Web API.
@@ -64,3 +64,5 @@ There are many ways to structure a bot code, but this is the one i used
 
   [Real Time Client(RTM)]: https://api.slack.com/rtm/  "Real Time Client(RTM)"
   [Slack Python Onboarding Tutorial]: https://github.com/rnm2453/python-slackclient-1/tree/master/tutorial  "Slack Python Onboarding Tutorial"
+  [For Windows]: https://helpdeskgeek.com/how-to/create-custom-environment-variables-in-windows "For Windows"
+  [For Python]: https://stackoverflow.com/questions/5971312/how-to-set-environment-variables-in-python "For Python"
