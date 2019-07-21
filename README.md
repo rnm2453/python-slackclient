@@ -9,10 +9,10 @@ This is a Slack v2.x Bot Project using the [Real Time Client(RTM)] API written b
 To Create the application and install all of the requirments I followed the [Slack Python Onboarding Tutorial]
 
 More Setup:
-  *Remeber to follow the [Slack Python Onboarding Tutorial] to create the application.
-  *Create an Enviormental Variable That Contains The Bot's OAuth Acsess Token.
-  *The Token's format: xoxb-\**\**\**\**\**\**\-*\**\**\**\**\**\*-\**\**\**\**\**\**\**\**\**\**\**\**.
-  *I named it 'SLACK_BOT_TOKEN'.
+1.Remeber to follow the [Slack Python Onboarding Tutorial] to create the application.
+2.Create an Enviormental Variable That Contains The Bot's OAuth Acsess Token.
+3.The Token's format: xoxb-\**\**\**\**\**\**\-*\**\**\**\**\**\*-\**\**\**\**\**\**\**\**\**\**\**\**.
+4.I named it 'SLACK_BOT_TOKEN'.
 
 What Can The Following Bot Do:
 ======== 
