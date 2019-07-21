@@ -25,7 +25,7 @@ What Can The Following Bot Do:
  Listening To Events:
  =======
 
- <code>
+```python
   """
   NOTE: this code only recives the data, it dosen't do with it anything afterwards
   #The you can use with the RTM can be seen in the link bellow
@@ -46,7 +46,7 @@ What Can The Following Bot Do:
     rtm_client = slack.RTMClient(token=slack_token, ssl=ssl_context) # Creates The Connection With The Bot's Credentials
     rtm_client.start() # Requests Connection with the Web Api
  </code>
- 
+ ```
  ""INSERT LINK""
  So what excactly is the Happening Here?.
  The Messy "\__main___" bit Allows The RTM API to send a stream of events to the Web Api
