@@ -1,4 +1,3 @@
-
 # python-slackclient
 slack client v2.x implementation with python 3.7
 
@@ -8,11 +7,11 @@ Slack Bot Using Slack v2 And Python
 This is a Slack v2.x Bot Project using the [Real Time Client(RTM)] API written by Slack.
 To Create the application and install all of the requirments I followed the [Slack Python Onboarding Tutorial]
 
-More Setup:
+###### More Setup:
 1.Remeber to follow the [Slack Python Onboarding Tutorial] to create the application.
 2.Create an Enviormental Variable That Contains The Bot's OAuth Acsess Token.
-3.The Token's format: xoxb-\**\**\**\**\**\**\-*\**\**\**\**\**\*-\**\**\**\**\**\**\**\**\**\**\**\**.
-4.I named it 'SLACK_BOT_TOKEN'.
+3.The Token's format: xoxb-\*\*\*\*\*\*\*\*\*\*\*\*\-\*\*\*\*\*\*\*\*\*\*\*\*\-\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*.
+4.I named it **'SLACK_BOT_TOKEN'**.
 
 What Can The Following Bot Do:
 ======== 
@@ -20,7 +19,7 @@ What Can The Following Bot Do:
   2. Respond To Messages
   3. Reply In Threads
   4. React to Reactions
-  5. And More if you want to
+  5. And More if you want to :sunny:
   
   
   
@@ -65,5 +64,3 @@ There are many ways to structure a bot code, but this is the one i used
 
   [Real Time Client(RTM)]: https://api.slack.com/rtm/  "Real Time Client(RTM)"
   [Slack Python Onboarding Tutorial]: https://github.com/rnm2453/python-slackclient-1/tree/master/tutorial  "Slack Python Onboarding Tutorial"
-
-
