@@ -1,15 +1,17 @@
 import re
 import random
 from Type.message import Message
+from database_alternator import database_alternator
 
-"""
-To find your bot's id, you need to send a message where you mention him and then print the payload text.
-you will see that slack automatically swaps the botname to a combination of letters.
-"""
+# Create Connection To Data Base
+db = database_alternator('localhost', 'root', 'Game1234monkey', 'slackusers')
+
+# Save Bot Credentials
 bot_username = "<@UKW4RAK1P>" 
 bot_id = "ULH08DM1B"
 
-#This Object recives message an assorts them to different classes
+
+#This Object recives message and assorts them to different classes
 class MessageProducer:
     def __init__(self, channel, attachments : dict):
         self.channel = channel
@@ -17,12 +19,11 @@ class MessageProducer:
         self.thread_ts = attachments["thread_ts"]
         self.in_thread = attachments["in_thread"]
         self.item_user = attachments["item_user"]
-        self.input_list =  ( # RegEx Options for possible input options
-            ("^(?P<input>[a-zA-Z-@ ]+)$", self.message),
-            ("((?P<botname>[@<>0-9a-zA-Z]+)\s+)?(?P<input>[a-zA-Z ]+)$", self.app_mention),
-            # ("(?P<input>[:^_a-z]+)", self.reaction_added), #dm
-            ("((?P<botname>[@<>0-9a-zA-Z]+)\s+)?(?P<input>[:^_a-z ]+)", self.reaction_added) #channel
         
+        self.input_list =  ( # RegEx  for possible input options
+            (r"((?P<botname>[@<>0-9A-Z]+)\s+)?(?P<input>(?:create|insert|add)\s(?P<item>[a-z]+)(?:.+)(?:database))", self.insert),
+            (r"((?P<botname>[@<>0-9A-Z]+)\s+)?(?P<input>[:^_a-zA-Z\s@]+)", self.message),
+            (r"((?P<botname>[@<>0-9a-zA-Z]+)\s+)?(?P<input>[:^_a-z ]+)", self.reaction_added) 
         )
     
     #finds if dm or channel
@@ -42,7 +43,7 @@ class MessageProducer:
                 print(payload)
                 return self.func(**payload)
 
-    def handle_response(self, input):
+    def handle_response(self, input):   ## If ^ -> Must Include. If # -> Mabye Include
         options = []
         if isincluded(input, "#hello#hi#hey#howdy#Hello#Hey#Hi#Howdy"):
             options = ["Hello how are you?", "Hey There, Whats up?", "Yooo, How are you doing today" ]
@@ -55,19 +56,17 @@ class MessageProducer:
        #return [Message(self.channel, ":hushed:"), Message(self.channel, "I Like This Emoji")]
 
 
+    def insert(self, **payload): 
+        db.insert(payload['item'], "", "", "")
+        return Message(self.channel, "Record inserted successfully into database")
+
    #Generic Message Constructor
     def message(self, **payload):
         if self.channel_type == "dm":
-            return self.handle_response(payload['input'])
-
-        
-                
-       
-    #@ Message Constructor
-    def app_mention(self, **payload):
-        if self.channel_type == 'dm':  
-            return Message(self.channel, "This is a private conversation, you dont need to @ me")
-
+            if bot_username not in payload['input']:
+                return self.handle_response(payload['input'])
+            else:
+                return Message(self.channel, "You Dont Need To @ me in a private conversation")
         elif self.channel_type == "channel":
             if payload["botname"] == bot_username: 
                 return self.handle_response(payload['input'])
@@ -115,6 +114,7 @@ def isincluded(input, txt):
     if has_required_keyword and has_keyword:
         return True
     return False
+
 
 
 
