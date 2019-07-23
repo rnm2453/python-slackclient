@@ -1,3 +1,14 @@
+#!C:/Users/Roey Lifshitz/AppData/Local/Programs/Python/Python37/python.exe
+#My Python Path
+print("Content-Type: text/html")
+print()
+print ("""
+    <TITLE>CGI script ! Python</TITLE>
+    <H1>The Bot is Running</H1>
+    Hello, world!
+"""
+)
+import Config.db
 ### THIS APP USES RTM CLIENT AND NOT EVENT API
 import os
 import slack
