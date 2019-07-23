@@ -8,15 +8,15 @@ print ("""
     Hello, world!
 """
 )
-import Config.db
 ### THIS APP USES RTM CLIENT AND NOT EVENT API
 import os
 import slack
 import certifi
+import datetime
 import ssl as ssl_lib
-from Type.message import Message
+import Config.db
 from message_producer import MessageProducer
-
+from Type.message import Message
 
 # this variable will contain all sent messages for future use
 sent_messages = {}
