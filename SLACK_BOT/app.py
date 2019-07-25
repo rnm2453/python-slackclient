@@ -14,17 +14,14 @@ import slack
 import certifi
 import datetime
 import ssl as ssl_lib
-import Config.db
-from message_producer import MessageProducer
-from Type.message import Message
+from message_producer import MessageProducer, bot
 
-# this variable will contain all sent messages for future use
-sent_messages = {}
 
 # Posts the message
-def process_message(web_client: slack.WebClient, user_id: str, channel_id: str, text: str, attachments: dict):
-    producer = MessageProducer(channel_id, attachments)  
-    message_handler = producer.get_message_type(text) #
+def process_message(web_client: bot.get_WebClient(), user_id: str, channel_id: str, text: str, attachments: dict):
+    producer = MessageProducer(channel_id, user_id, attachments)
+    print(bot.get_username(user_id))  
+    message_handler = producer.find_message_type(text) 
     if message_handler is not None:
         if isinstance(message_handler, list): #if array of Messages
             for i in range(len(message_handler)): 
@@ -35,6 +32,7 @@ def process_message(web_client: slack.WebClient, user_id: str, channel_id: str, 
             message = message_handler.get_message(attachments)
             response = web_client.chat_postMessage(**message) # Post the onboarding message in Slack
             message_handler.timestamp = response["ts"] # Capture Time for later use
+    del producer
         
       
 
@@ -86,6 +84,7 @@ if __name__ == "__main__":
     slack_token = os.environ["SLACK_BOT_TOKEN"]
     rtm_client = slack.RTMClient(token=slack_token, ssl=ssl_context)
     rtm_client.start()
+    
     
 
 
