@@ -37,10 +37,9 @@ class database_alternator:
         query = f"SELECT * FROM `products` WHERE `name` = '{name}'"
         result = self.cursor.execute(query)
         product = result.fetchall()
-        
         if product["release_time"] < datetime.now():
             return False
-        return Frue
+        return True
         
         self.conn.commit()
     def close_connection(self):
