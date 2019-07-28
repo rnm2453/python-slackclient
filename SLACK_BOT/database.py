@@ -42,12 +42,12 @@ class Database:
         result = self.cursor.execute(query)
         product = self.cursor.fetchall()
         print(product)
-        return product
+        return product[0]
 
     def delta_release_by_name(self, name: str):
         # Finds Time Left Till Release Of Item
         product = self.get_data_by_name(name)
-        release_time = product[0]["release_time"]
+        release_time = product["release_time"]
         current_time = datetime.now()
         deltatime = release_time - current_time
 
@@ -58,12 +58,10 @@ class Database:
         return '{:02}:{:02}:{:02}'.format(int(hours), int(minutes), int(seconds))
 
         
-
-
     def is_occupied_by_name(self, name: str):
         product = self.get_data_by_name(name)
-        if product[0]["release_time"] is not None:
-            if product[0]["release_time"] > datetime.now():
+        if product["release_time"] is not None:
+            if product["release_time"] > datetime.now():
                 return True
         return False
 
