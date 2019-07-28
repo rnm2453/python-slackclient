@@ -1,13 +1,5 @@
 #!C:/Users/Roey Lifshitz/AppData/Local/Programs/Python/Python37/python.exe
 #My Python Path
-print("Content-Type: text/html")
-print()
-print ("""
-    <TITLE>CGI script ! Python</TITLE>
-    <H1>The Bot is Running</H1>
-    Hello, world!
-"""
-)
 ### THIS APP USES RTM CLIENT AND NOT EVENT API
 import os
 import slack
@@ -16,6 +8,14 @@ import datetime
 import ssl as ssl_lib
 from message_producer import MessageProducer, bot
 
+print("Content-Type: text/html")
+print()
+print ("""
+    <TITLE>CGI script ! Python</TITLE>
+    <H1>The Bot is Running</H1>
+    Hello, world!
+"""
+)
 
 # Posts the message
 def process_message(web_client: bot.get_WebClient(), user_id: str, channel_id: str, text: str, attachments: dict):
@@ -39,6 +39,7 @@ def process_message(web_client: bot.get_WebClient(), user_id: str, channel_id: s
 
 @slack.RTMClient.run_on(event="reaction_added")
 def reaction_added(**payload):
+    print("readtion")
     # Get data from message Payload
     data = payload["data"]
     web_client = payload["web_client"]
@@ -77,6 +78,9 @@ def create_attachments(data) :
     }
     if attachments["thread_ts"] != "":
         attachments['in_thread'] = True
+
+    print("Attachments:")
+    print(attachments)
     return attachments
 
 if __name__ == "__main__":
