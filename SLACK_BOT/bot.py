@@ -16,7 +16,7 @@ class Bot():
             
             Getters, Setter
 
-            get_ID(): finds the id of the users who posted a message
+            get_ID(): finds bot id
             get_username(): find the username of a user by a given id
 
     """

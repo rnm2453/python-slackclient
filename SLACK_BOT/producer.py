@@ -9,39 +9,43 @@ from datetime import datetime, timedelta
 # Create Connection To Data Base
 db = Database('localhost', 'root', 'Game1234monkey', 'slackusers')
 
-# refresh the database
-db.refresh_occupied()
-
-# Create Connection To Bot
+# Get Slack Token 
 slack_token = os.environ["SLACK_BOT_TOKEN"]
+# Create Connection To Bot
 bot = Bot(slack_token)
-
-
+bot_username = "<@" +  str(bot.get_ID()) + ">"
 
 #This Object recives message and assorts them to different classes
-class MessageProducer:
+class Producer:
     def __init__(self, channel: str, user_id: str, attachments : dict):
 
+        # The Client's Data
         self.user_id = user_id
         self.username = bot.get_username(user_id)
-        self.bot_username = "<@" +  str(bot.get_ID()) + ">"
+        
+        # The Bot's Data
+        self.bot_username = bot_username
 
+        # The Platfrom Data
         self.channel = channel
         self.channel_type = self.get_channel_type()
-
+        
+        # The Payload Attachments
         self.thread_ts = attachments["thread_ts"]
         self.in_thread = attachments["in_thread"]
         self.item_user = attachments["item_user"]
         
-        self.input_list =  ( # RegEx  for possible input options
-            (r"((?P<botname>[@<>0-9A-Z]+)\s+)?(?P<input>(?:create|insert|add)\s(?P<item>[a-z]+)(?:.+)(?:database))", self.insert),
-            (r"((?P<botname>[@<>0-9A-Z]+)\s+)?(?P<input>(?:release)\s(?P<item>[a-z]+)(?:.+)(?:database))", self.release),    
-            (r"((?P<botname>[@<>0-9A-Z]+)\s+)?(?P<input>(?:take|give me)\s(?P<item>[a-z]+)(?:.+)(?:database\s)[a-zA-z\s]*(?P<time>(?:[0-9]*))(?:\s*)(?P<type>(?:(min|minutes|hour|hours|day|days))))", self.take),    
+        self.input_list =  ( # RegEx for possible input options
+            (r"((?P<botname>[@<>0-9A-Z]+)\s+)?(?P<input>(?:create|insert|add)\s(?P<item>[a-z]+(?:\s[a-z0-9]*)?)\s(?:.+)(?:database))", self.insert),
+            (r"((?P<botname>[@<>0-9A-Z]+)\s+)?(?P<input>(?:release)\s(?P<item>[a-z]+(?:\s[a-z0-9]*)?)\s(?:.+)(?:database))", self.release),
+            (r"((?P<botname>[@<>0-9A-Z]+)\s+)?(?P<input>(?:remove|delete|erase)\s(?P<item>[a-z]+(?:\s[a-z0-9]*)?)\s(?:.+)(?:database))", self.erase),    
+            (r"((?P<botname>[@<>0-9A-Z]+)\s+)?(?P<input>(?:take|give me)\s(?P<item>[a-z]+(?:\s[a-z0-9]*)?)\s(?:.*)(?:database\s)[a-zA-z\s]*(?P<time>(?:[0-9]*))(?:\s*)(?P<type>(?:(min|minutes|hour|hours|day|days))))", self.take),  
+            (r"(?P<input>(?:show)\s((?P<type>(?:available)\s)?(?P<item>[a-z]+(?:\s[a-z0-9]*)?)?)?\s(?:.+)(?:database))", self.show),
             (r"((?P<botname>[@<>0-9A-Z]+)\s+)?(?P<input>[!^_a-zA-Z\s@]+)", self.message),
             (r"((?P<botname>[@<>0-9a-zA-Z]+)\s+)?(?P<input>[:^_a-z ]+)", self.reaction_added) 
         )
     
-    # Getters and Setters
+    # Getters and Setters -----------------------------------------------
     def get_user_id(self): 
         return self.user_id
 
@@ -78,6 +82,27 @@ class MessageProducer:
         self.in_thread = attachments["in_thread"]
         self.item_user = attachments["item_user"]
     
+    #-------------------------------------------------------------------
+    
+    def handle_response(self, input):   ## If ^ -> Must Include. If # -> Mabye Include
+        options = []
+        if isincluded(input, "#hello#hi#hey#howdy#Hello#Hey#Hi#Howdy"):
+            options = ["Hello how are you?", "Hey There, Whats up?", "Yooo, How are you doing today" ]
+            return Message(self.channel, random.choice(options))
+        if isincluded(input, "^i am#i am#good#great#amazing#fine#ok#okay"):
+            return Message(self.channel, "Thats awsome! i hope you will have a good day")
+        if input == "!help":
+            return Message(self.channel,
+                "i am a slack bot, i am here to help you, here are some userfull commands you can use me for!\n\n" +
+                "add to database: 'insert/create/add <item_name> ... database\n" +
+                "take an item: 'take/give me <item_name> ... database for [number] minutes/hours/days\n" +
+                "release an item: 'release <item_name> ... database\n" +
+                "remove an item 'remove/erase/delete <item_name> from database\n")
+        return Message(self.channel, "I can't understand you. type '!help'")
+       ### TO RETURN A LIST OF MESSAGE USE THE FOLLOWING SYNTAX
+       #return [Message(self.channel, ":hushed:"), Message(self.channel, "I Like This Emoji")]
+    
+    
     # Assorts the type of response message
     def find_message_type(self, input: str):
         # Loop through the input list
@@ -90,26 +115,18 @@ class MessageProducer:
                 print(payload)
                 return self.func(**payload)
 
-    def handle_response(self, input):   ## If ^ -> Must Include. If # -> Mabye Include
-        options = []
-        if isincluded(input, "#hello#hi#hey#howdy#Hello#Hey#Hi#Howdy"):
-            options = ["Hello how are you?", "Hey There, Whats up?", "Yooo, How are you doing today" ]
-            return Message(self.channel, random.choice(options))
-        if isincluded(input, "^i am#i am#good#great#amazing#fine#ok#okay"):
-            return Message(self.channel, "Thats awsome! i hope you will have a good day")
-        if input == "!help":
-            return Message(self.channel,
-                "add to database: 'insert/create/add <item_name> ... database\n" +
-                "take an item: 'take\\/give me <item_name>\n ... database for [number] minutes/hours/days" +
-                "remove an item 'remove/erase/delete <item_name> from database\n")
-        return Message(self.channel, "I can't understand you. type '!help'")
-       ### TO RETURN A LIST OF MESSAGE USE THE FOLLOWING SYNTAX
-       #return [Message(self.channel, ":hushed:"), Message(self.channel, "I Like This Emoji")]
 
-
+    """ The Following Functions Are All Different Actions that the bot can do. """
+    
     def insert(self, **payload): 
         db.insert(payload['item'], "", "", "")
         return Message(self.channel, "Record inserted successfully into database")
+
+    def erase(self, **payload):
+        if db.is_occupied_by_name(payload['item']):
+            return Message(self.channel, "You Can not remove an used item, release it first, or wait " + str(db.delta_release_by_name(payload['item'])))
+        else :
+            db.remove(payload['item'])
 
     def release(self, **payload):
         product = db.get_data_by_name(payload['item'])
@@ -140,6 +157,29 @@ class MessageProducer:
             db.update(payload['item'], self.username, current_time, release_time)
             return Message(self.channel, f"You Successfully Took the {payload['item']} for {payload['time']} {payload['type']}")
    
+    def show(self, **payload):
+        #refresh database to show updated results
+        db.refresh_occupied()
+        #Show All
+        if payload['item'] == 'all':
+            if payload['type'] == None:
+                print("PRINT_ALL")
+                return Message(self.channel, db.show_all())
+            else :
+                print("PRINT ALL AVAILABLE")
+                return Message(self.channel, db.show_all_availlable())
+        else:
+            if db.is_exists(payload['item']):
+                if payload['type'] == None:
+                    print("PRINT ITEM")
+                    return Message(self.channel, db.show(payload['item']))
+                else:
+                    print("PRINT AVIALABLE ITEM")
+                    return Message(self.channel, db.show_availlable(payload['item']))
+            else:
+                return Message(self.channel, f"The Item '{payload['item']}' Does not appear to be in the database ")
+                    
+
    #Generic Message Constructor
     def message(self, **payload):
         if self.channel_type == "dm":
@@ -162,10 +202,10 @@ class MessageProducer:
                 return [Message(self.channel, ":hushed:"), Message(self.channel, "I Like This Emoji")]
 
 
-
-
-#recives an array of possible inputs and required inputs and create a response acording to the inputs
 def isincluded(input, txt):
+    """ This Function recives an string of possible inputs and required inputs and finds
+         if a message contains those inputs. """
+         
     # Variable decleration
     must_include = []
     included = []
