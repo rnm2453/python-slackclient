@@ -20,12 +20,14 @@ This is a Slack v2.x Bot Project using the [Real Time Client(RTM)] API written b
 
 1. Install requirements. 
     * To do so, just follow the first page of [Slack Python Onboarding Tutorial]
-
-2. Install Xampp, And Pip install mysql-connector, or mysql-connector-python
-
-3. Create a Enviorment Variable that contains the Bot's OAuth acsess token named SLACK_BOT_TOKEN (The name isnt really important).
+    
+2. Install the bot to your workspace and Create a Enviorment Variable that contains the Bot's OAuth acsess token named SLACK_BOT_TOKEN (The name isnt really important).
     * To do so, follow this [For Windows] or this [For Python] tutorial
     * Please keep in mind the the Token format is: xoxb-\*\*\*\*\*\*\*\*\*\*\*\*\-\*\*\*\*\*\*\*\*\*\*\*\*\-\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\**.
+   
+3. restart your computer to save the enviorment variable (if on windows)
+
+3. Install Xampp, And Pip install mysql-connector, or mysql-connector-python
 
 4. Enable python in Xampp.
     * How to [Run Python With Xampp]
