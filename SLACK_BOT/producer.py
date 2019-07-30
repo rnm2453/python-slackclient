@@ -10,7 +10,7 @@ from datetime import datetime, timedelta
 db = Database('localhost', 'root', 'Game1234monkey', 'slackusers')
 
 # Get Slack Token 
-slack_token = os.environ["SLACK_TEST"]#os.environ["SLACK_BOT_TOKEN"]
+slack_token = os.environ["SLACK_BOT_TOKEN"]
 # Create Connection To Bot
 bot = Bot(slack_token)
 
@@ -34,6 +34,7 @@ class Producer:
         self.thread_ts = attachments["thread_ts"]
         self.in_thread = attachments["in_thread"]
         self.item_user = attachments["item_user"]
+        self.event = attachments["event"]
         
         self.input_list =  ( # RegEx for possible input options
             (r"((?P<botname>[@<>0-9A-Z]+)\s+)?(?P<input>(?:create|insert|add)\s(?P<item>[a-z]+(?:\s[a-z0-9]*)?)\s(?:.+)(?:database))", self.insert),
@@ -63,6 +64,7 @@ class Producer:
             "thread_ts" : self.thread_ts,
             "in_thread" : self.in_thread,
             "item_user" : self.item_user,
+            "event" : self.event
         }
     
     def set_user_id(self, user_id):
@@ -81,6 +83,7 @@ class Producer:
         self.thread_ts = attachments["thread_ts"]
         self.in_thread = attachments["in_thread"]
         self.item_user = attachments["item_user"]
+        self.event = attachments["event"]
     
     #-------------------------------------------------------------------
     
@@ -198,10 +201,13 @@ class Producer:
         if self.channel_type == "dm":
             return Message(self.channel, ":smile:")
 
-        elif self.channel_type == "channel":       
-            if self.item_user == None: #This means that the reaction was on a Bot Message 
-                return [Message(self.channel, ":hushed:"), Message(self.channel, "I Like This Emoji")]
-
+        elif self.channel_type == "channel":   
+            if self.event == "reaction":
+                if self.item_user == None: #This means that the reaction was on a Bot Message 
+                    return [Message(self.channel, ":hushed:"), Message(self.channel, "Im Shocked!")]
+            elif self.event == "message":
+                if payload['botname'] == self.bot_username:
+                    return Message(self.channel, ":smile:")
 
 
 def isincluded(input, txt):
