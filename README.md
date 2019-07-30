@@ -4,17 +4,6 @@ slack client v2.x implementation with python 3.7
 Slack Bot Using Slack v2, Python And MySQL
 ========
 
-This is a Slack v2.x Bot Project using the [Real Time Client(RTM)] API written by Slack.
-To Create the application and install all of the requirments I followed the *[Slack Python Onboarding Tutorial]*
-
-######Setup:
-1. follow the [Slack Python Onboarding Tutorial] to create your application.
-2. Create an Enviorment Variable That Contains The Bot's OAuth Acsess Token. a Quick Google search should teach you how to do it. but if you are to lasy follow this [For Windows] or this [For Python] tutorial
-* Please keep in mind the the Token format is: xoxb-\*\*\*\*\*\*\*\*\*\*\*\*\-\*\*\*\*\*\*\*\*\*\*\*\*\-\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\**.
-* I named it 'SLACK_BOT_TOKEN'.
-3. Download Xammp
-4. Create a MySQL database
-
 What Can The Following Bot Do:
 ======== 
   1. Distinguish between DM's and Channels
@@ -24,10 +13,31 @@ What Can The Following Bot Do:
   5. Alter A Database
   6. And More if you want to :sunny:
   
+
+
+
+Setup:
+======== 
+This is a Slack v2.x Bot Project using the [Real Time Client(RTM)] API written by Slack And a MySQL Database.
+
+1. Install requirements. 
+ * To do so, just follow the first page of [Slack Python Onboarding Tutorial]
+2. Install Xampp, And Pip install mysql-connector, or mysql-connector-python
+3. Create a Enviorment Variable that contains the Bot's OAuth acsess token named SLACK_BOT_TOKEN (The name isnt really important).
+ * To do so, follow this [For Windows] or this [For Python] tutorial
+ * Please keep in mind the the Token format is: xoxb-\*\*\*\*\*\*\*\*\*\*\*\*\-\*\*\*\*\*\*\*\*\*\*\*\*\-\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\**.
+4. Enable python in Xampp.
+ * How to [Run Python With Xampp] 
+5. Head to the xampp/htdocs folder on your computer, and create a new one for your project
+6. Create a Database.
+ * To do so, Run Apchae and MySQL on the Xampp control pannel.
+ * head to localhost/phpmyadmin
+ * create a new table on the menu at the right side
+ * create a new table inside the database and add the values you want. 
   
   
  Listening To Events:
- =======
+======== 
 
 ```python
   """ NOTE: The Following code will print the Slack Message Payload using RTM Client"""
@@ -51,7 +61,33 @@ What Can The Following Bot Do:
  After we setup the RTM connection to our app, we can use the RTM to listen to events.
  Each Event recives a payload, the payload contains all the data sent from the Web API.
  
- This is a Basic RTM example.
+
+Connect Bot to Database
+======== 
+After creating a database, installing myslq-connector, configuring xampp to work with python. copy the following code.
+```python
+  import mysql.connector
+    """ This is a basic example on how to connect a python script to a MySQL xampp database """         
+    def connect_to_db(host: str, root: str, passwd: str, db: str): 
+      """ The Function Creates a Connection to a DB
+
+        Attributes:
+          host = 'your_host_name'
+            this project works only locally, there for it needs to be 'localhost'
+          root = 'root'
+          passw = 
+            by defualt there is no password
+          db = 'your database name'"""
+
+        self.host = host
+        self.root = root
+        self.passwd = passwd
+        self.db = db
+        self.conn = mysql.connector.connect(host = self.host, user = self.root, passwd = self.passwd, db = self.db)
+        
+```
+  The [Database Connection] link can help you find the values of each str in your computer
+
  
 How The Bot Works?
 ======
@@ -63,7 +99,6 @@ How The Bot Works?
 6. The response return all the way back to the processing function
 7. The processing function posts the response
 
-There are many ways to structure a bot code, but this is the one i used
 
 Project Files
 =======
@@ -84,7 +119,8 @@ The Project Consists of:
 |   └── ...
 └── ...
 ```
-###### Purpose OF Each File
+Purpose OF Each File
+=======
  * app.py- listens to different RTM events and runs the application. can add/remove events
  * producer.py- recives differnt inputs and creates outputs respectavly. may need to change depends on the events
  * bot.py- find the bot username, id and connects everything to the WebClient
@@ -94,7 +130,6 @@ The Project Consists of:
  * 
  * To Create Messages with different layouts you need to create a new file and follow Slack's 'Message Block layout" page
  
-##### Ive Finish Coding My bot And I Want To Connect It TO A Database
 
 
   [Real Time Client(RTM)]: https://api.slack.com/rtm/  "Real Time Client(RTM)"
@@ -102,3 +137,5 @@ The Project Consists of:
   [For Windows]: https://helpdeskgeek.com/how-to/create-custom-environment-variables-in-windows "For Windows"
   [For Python]: https://stackoverflow.com/questions/5971312/how-to-set-environment-variables-in-python "For Python"
   [Message Block layout]: https://api.slack.com/reference/messaging/blocks "Message Block layout"
+  [Run Python With Xampp]: https://stackoverflow.com/questions/42704846/running-python-scripts-with-xampp "Run Python With Xammpp"
+  [Database Connection]: https://www.quora.com/Where-do-I-find-my-localhost-name-and-my-user-name-on-phpMyAdmin "Database Connection"
