@@ -136,7 +136,7 @@ Purpose OF Each File
 
 
   [Real Time Client(RTM)]: https://api.slack.com/rtm/  "Real Time Client(RTM)"
-  [Slack Python Onboarding Tutorial]: https://github.com/rnm2453/python-slackclient-1/tree/master/tutorial  "Slack Python Onboarding Tutorial"
+  [Slack Python Onboarding Tutorial]: https://github.com/slackapi/Slack-Python-Onboarding-Tutorial/blob/master/docs/Section-2.md  "Slack Python Onboarding Tutorial"
   [For Windows]: https://helpdeskgeek.com/how-to/create-custom-environment-variables-in-windows "For Windows"
   [For Python]: https://stackoverflow.com/questions/5971312/how-to-set-environment-variables-in-python "For Python"
   [Message Block layout]: https://api.slack.com/reference/messaging/blocks "Message Block layout"
