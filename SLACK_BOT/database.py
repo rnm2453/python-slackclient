@@ -35,18 +35,19 @@ class Database:
         query = f"INSERT INTO `products` (`id`, `name`, `occupied_by`, `start_time`, `release_time`) VALUES (NULL, '{name}', '{occupied_by}', '{start_time}', '{release_time}')"
         result = self.cursor.execute(query)
         self.conn.commit()
+        print("\nRecord inserted successfully from 'products' table")
 
     def remove(self, name: str):
         query = f"DELETE FROM `products` WHERE `name` = '{name}'"
         result = self.cursor.execute(query)
         self.conn.commit()
-        print("")
+        print("\nRecord erased successfully from 'products' table")
 
     def update(self, name: str, occupied_by: str, start_time: datetime, release_time: datetime):
         query =  f"UPDATE `products` SET `occupied_by` = '{occupied_by}', `start_time` = '{start_time}', `release_time` = '{release_time}' WHERE `name` = '{name}'"
         result = self.cursor.execute(query)
         self.conn.commit()
-        print("Record updated successfully from 'products' table")
+        print("\nRecord updated successfully from 'products' table")
 
     
     def get_data_by_name(self, name: str):
@@ -104,7 +105,7 @@ class Database:
                 pass
             else:
                 self.update(product['name'], "", "", "")
-        print("Record refreshed successfully `products` table ")
+        print("\nRecord refreshed successfully `products` table ")
 
 
     def show_all(self):

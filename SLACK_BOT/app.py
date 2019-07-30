@@ -1,12 +1,23 @@
 #!C:/Users/Roey Lifshitz/AppData/Local/Programs/Python/Python37/python.exe
 """ My Python Path """
 
+print("Content-Type: text/html")
+print()
+print ("""
+    <TITLE>CGI script ! Python</TITLE>
+    <H1>This is my first CGI script</H1>
+    Hello, world!
+"""
+)
+
 import os
 import slack
 import certifi
 import datetime
 import ssl as ssl_lib
 from producer import Producer, bot
+
+print(os.environ)
 
 def process_message(web_client: bot.get_WebClient(), user_id: str, channel_id: str, text: str, attachments: dict): 
     """ The Message Processor Function
@@ -40,7 +51,7 @@ def process_message(web_client: bot.get_WebClient(), user_id: str, channel_id: s
     
 
 def create_attachments(data) :
-    """ This Function Creates Attachments to a messgae by given payload """
+    """ This Function Creates Attachments fto a messgae by given payload """
     
     """ Attachments Attributes
         Thread Attachments:
@@ -57,7 +68,7 @@ def create_attachments(data) :
         "ts": data.get("ts", ""),
         "thread_ts" : data.get("thread_ts", ""),
         "in_thread" : False,
-        "item_user" : data.get("item_user", None)
+        "item_user" : data.get("item_user")
     }
     
     if attachments["thread_ts"] != "":
@@ -117,7 +128,7 @@ def message(**payload):
 
 if __name__ == "__main__":
     ssl_context = ssl_lib.create_default_context(cafile=certifi.where())
-    slack_token = os.environ["SLACK_BOT_TOKEN"]
+    slack_token = os.environ["SLACK_TEST"]#os.environ["SLACK_BOT_TOKEN"]
     rtm_client = slack.RTMClient(token=slack_token, ssl=ssl_context)
     rtm_client.start()
     

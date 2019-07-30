@@ -10,7 +10,7 @@ from datetime import datetime, timedelta
 db = Database('localhost', 'root', 'Game1234monkey', 'slackusers')
 
 # Get Slack Token 
-slack_token = os.environ["SLACK_BOT_TOKEN"]
+slack_token = os.environ["SLACK_TEST"]#os.environ["SLACK_BOT_TOKEN"]
 # Create Connection To Bot
 bot = Bot(slack_token)
 
@@ -97,6 +97,8 @@ class Producer:
                 "add to database: 'insert/create/add <item_name> ... database\n" +
                 "take an item: 'take/give me <item_name> ... database for [number] minutes/hours/days\n" +
                 "release an item: 'release <item_name> ... database\n" +
+                "list items: show (optional: availablle) <item_name> .... database\n" +
+                "list all items: show (optional: avialablle) all ... database\n" +  
                 "remove an item 'remove/erase/delete <item_name> from database\n")
         return Message(self.channel, "I can't understand you. type '!help'")
        ### TO RETURN A LIST OF MESSAGE USE THE FOLLOWING SYNTAX
@@ -193,13 +195,13 @@ class Producer:
      
 
     def reaction_added(self, **payload):
-        print("passed")
         if self.channel_type == "dm":
             return Message(self.channel, ":smile:")
 
         elif self.channel_type == "channel":       
             if self.item_user == None: #This means that the reaction was on a Bot Message 
                 return [Message(self.channel, ":hushed:"), Message(self.channel, "I Like This Emoji")]
+
 
 
 def isincluded(input, txt):
