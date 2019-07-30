@@ -1,8 +1,6 @@
 # python-slackclient
 slack client v2.x implementation with python 3.7
-
-Slack Bot Using Slack v2, Python And MySQL
-========
+Slack Bot Using Slack v2, Python And MySQl
 
 What Can The Following Bot Do:
 ======== 
@@ -21,19 +19,24 @@ Setup:
 This is a Slack v2.x Bot Project using the [Real Time Client(RTM)] API written by Slack And a MySQL Database.
 
 1. Install requirements. 
- * To do so, just follow the first page of [Slack Python Onboarding Tutorial]
+    * To do so, just follow the first page of [Slack Python Onboarding Tutorial]
+
 2. Install Xampp, And Pip install mysql-connector, or mysql-connector-python
+
 3. Create a Enviorment Variable that contains the Bot's OAuth acsess token named SLACK_BOT_TOKEN (The name isnt really important).
- * To do so, follow this [For Windows] or this [For Python] tutorial
- * Please keep in mind the the Token format is: xoxb-\*\*\*\*\*\*\*\*\*\*\*\*\-\*\*\*\*\*\*\*\*\*\*\*\*\-\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\**.
+    * To do so, follow this [For Windows] or this [For Python] tutorial
+    * Please keep in mind the the Token format is: xoxb-\*\*\*\*\*\*\*\*\*\*\*\*\-\*\*\*\*\*\*\*\*\*\*\*\*\-\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\**.
+
 4. Enable python in Xampp.
- * How to [Run Python With Xampp] 
+    * How to [Run Python With Xampp]
+
 5. Head to the xampp/htdocs folder on your computer, and create a new one for your project
+
 6. Create a Database.
- * To do so, Run Apchae and MySQL on the Xampp control pannel.
- * head to localhost/phpmyadmin
- * create a new table on the menu at the right side
- * create a new table inside the database and add the values you want. 
+    * To do so, Run Apchae and MySQL on the Xampp control pannel.
+    * head to localhost/phpmyadmin
+    * create a new table on the menu at the right side
+    * create a new table inside the database and add the values you want. 
   
   
  Listening To Events:
