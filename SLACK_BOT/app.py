@@ -17,7 +17,6 @@ import datetime
 import ssl as ssl_lib
 from producer import Producer, bot
 
-print(os.environ)
 
 def process_message(web_client: bot.get_WebClient(), user_id: str, channel_id: str, text: str, attachments: dict): 
     """ The Message Processor Function
@@ -50,7 +49,7 @@ def process_message(web_client: bot.get_WebClient(), user_id: str, channel_id: s
 
     
 
-def create_attachments(data) :
+def create_attachments(data, event: str) :
     """ This Function Creates Attachments fto a messgae by given payload """
     
     """ Attachments Attributes
@@ -68,7 +67,8 @@ def create_attachments(data) :
         "ts": data.get("ts", ""),
         "thread_ts" : data.get("thread_ts", ""),
         "in_thread" : False,
-        "item_user" : data.get("item_user")
+        "item_user" : data.get("item_user"),
+        "event" : event
     }
     
     if attachments["thread_ts"] != "":
@@ -97,14 +97,13 @@ def create_attachments(data) :
         
 @slack.RTMClient.run_on(event="reaction_added")
 def reaction_added(**payload):
-    print("readtion")
     # Get data from message Payload
     data = payload["data"]
     web_client = payload["web_client"]
     user_id = data.get("user")
     channel_id = data.get("item").get("channel")
     text = ":" + data.get("reaction") + ":"
-    attachments = create_attachments(data)
+    attachments = create_attachments(data, "reaction")
     
     # if message sent by user
     if (user_id is not None):
@@ -119,7 +118,7 @@ def message(**payload):
     user_id = data.get("user")
     channel_id = data.get("channel")
     text = data.get("text")
-    attachments = create_attachments(data)
+    attachments = create_attachments(data, "message")
    
     # if message sent by user
     if (user_id is not None):
@@ -128,7 +127,7 @@ def message(**payload):
 
 if __name__ == "__main__":
     ssl_context = ssl_lib.create_default_context(cafile=certifi.where())
-    slack_token = os.environ["SLACK_TEST"]#os.environ["SLACK_BOT_TOKEN"]
+    slack_token = os.environ["SLACK_BOT_TOKEN"]
     rtm_client = slack.RTMClient(token=slack_token, ssl=ssl_context)
     rtm_client.start()
     
