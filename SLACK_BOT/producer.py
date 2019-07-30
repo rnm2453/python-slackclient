@@ -13,7 +13,7 @@ db = Database('localhost', 'root', 'Game1234monkey', 'slackusers')
 slack_token = os.environ["SLACK_BOT_TOKEN"]
 # Create Connection To Bot
 bot = Bot(slack_token)
-bot_username = "<@" +  str(bot.get_ID()) + ">"
+
 
 #This Object recives message and assorts them to different classes
 class Producer:
@@ -24,7 +24,7 @@ class Producer:
         self.username = bot.get_username(user_id)
         
         # The Bot's Data
-        self.bot_username = bot_username
+        self.bot_username = "<@" +  str(bot.get_ID()) + ">"
 
         # The Platfrom Data
         self.channel = channel
@@ -183,7 +183,7 @@ class Producer:
    #Generic Message Constructor
     def message(self, **payload):
         if self.channel_type == "dm":
-            if self.bot_username not in payload['input']:
+            if payload['botname'] is None:
                 return self.handle_response(payload['input'])
             else:
                 return Message(self.channel, "You Dont Need To @ me in a private conversation")

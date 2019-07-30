@@ -1,17 +1,19 @@
 # python-slackclient
 slack client v2.x implementation with python 3.7
 
-Slack Bot Using Slack v2 And Python
+Slack Bot Using Slack v2, Python And MySQL
 ========
 
 This is a Slack v2.x Bot Project using the [Real Time Client(RTM)] API written by Slack.
 To Create the application and install all of the requirments I followed the *[Slack Python Onboarding Tutorial]*
 
-###### More Setup:
-1. Remeber to follow the [Slack Python Onboarding Tutorial] to create your application.
+######Setup:
+1. follow the [Slack Python Onboarding Tutorial] to create your application.
 2. Create an Enviorment Variable That Contains The Bot's OAuth Acsess Token. a Quick Google search should teach you how to do it. but if you are to lasy follow this [For Windows] or this [For Python] tutorial
-3. Please keep in mind the the Token format is: xoxb-\*\*\*\*\*\*\*\*\*\*\*\*\-\*\*\*\*\*\*\*\*\*\*\*\*\-\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\**.
-4. I named it 'SLACK_BOT_TOKEN'.
+* Please keep in mind the the Token format is: xoxb-\*\*\*\*\*\*\*\*\*\*\*\*\-\*\*\*\*\*\*\*\*\*\*\*\*\-\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\**.
+* I named it 'SLACK_BOT_TOKEN'.
+3. Download Xammp
+4. Create a MySQL database
 
 What Can The Following Bot Do:
 ======== 
@@ -19,7 +21,8 @@ What Can The Following Bot Do:
   2. Respond To Messages
   3. Reply In Threads
   4. React to Reactions
-  5. And More if you want to :sunny:
+  5. Alter A Database
+  6. And More if you want to :sunny:
   
   
   
@@ -39,14 +42,14 @@ What Can The Following Bot Do:
     slack_token = os.environ["SLACK_BOT_TOKEN"] # Fetchs The Slack OAuth Token From The Enviormental Variables
     rtm_client = slack.RTMClient(token=slack_token, ssl=ssl_context) # Starts The Connection With The Bot's Credentials
     rtm_client.start() # Requests Connection from the Web Api
- </code>
+
  ```
  
  ###### So what excactly is the Happening Here?.
  The Messy "\_\__main___" bit Allows The [Real Time Client(RTM)] to send a stream of events to the Web Api.
  This is the most complicated part and you dont need to fully understand it to continue creating your bot.
- After we setup the RTM connection to our app, we can use the [Real Time Client(RTM)] to listen to events.
- Each Event recives a payload, the payload contains all the data recived from the Web API.
+ After we setup the RTM connection to our app, we can use the RTM to listen to events.
+ Each Event recives a payload, the payload contains all the data sent from the Web API.
  
  This is a Basic RTM example.
  
@@ -55,8 +58,8 @@ How The Bot Works?
 1. The bot listen to events as seen before
 2. The bot uses the [Real Time Client(RTM)] to react to the events
 3. The bot recives a payload and send some data to a processing function
-4. The proccesiong function creates a message_producer with given params
-5. The message_producer builds the response
+4. The proccesiong function creates a producer with given params
+5. The producer builds the response
 6. The response return all the way back to the processing function
 7. The processing function posts the response
 
@@ -69,10 +72,11 @@ The Project Consists of:
 | python-slackclient
 |── SLACK_BOT
 |   |── app.py                        # Application Page
-|   |── message_producer.py           # messageProducer Constructor Function
+|   |── producer.py                   # Producer Constructor Function
+|   |── bot.py                        # Bot Constructor Function
+|   |── database.py                   # Database Constructor Function
 |   |── Type
 |   |   |── message.py                # message Constructor Function
-|   |   |── onboarding.py             # onboarding Constructor Function
 |   |   └── ...
 |   |── .gitignore
 |   |── requirements.txt              # requirements to install slack  
@@ -80,14 +84,18 @@ The Project Consists of:
 |   └── ...
 └── ...
 ```
-###### Python File's. What should I change? purpose
+###### Purpose OF Each File
  * app.py- listens to different RTM events and runs the application. can add/remove events
- * message_producer.py- recives differnt inputs and creates outputs respectavly. may need to change depends on the events
+ * producer.py- recives differnt inputs and creates outputs respectavly. may need to change depends on the events
+ * bot.py- find the bot username, id and connects everything to the WebClient
+ * database.py- alters the database, you may need to change it depeneding on your database
  * message.py- a generic message constructor. No need to Change 
- * onboarding.py- a onboarding message. Do as you wish, its your bot and you messages 
  *There is really nothing else in this project if you followed the installation tutorial already
+ * 
  * To Create Messages with different layouts you need to create a new file and follow Slack's 'Message Block layout" page
  
+##### Ive Finish Coding My bot And I Want To Connect It TO A Database
+
 
   [Real Time Client(RTM)]: https://api.slack.com/rtm/  "Real Time Client(RTM)"
   [Slack Python Onboarding Tutorial]: https://github.com/rnm2453/python-slackclient-1/tree/master/tutorial  "Slack Python Onboarding Tutorial"
