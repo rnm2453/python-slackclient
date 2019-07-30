@@ -34,7 +34,6 @@ class Bot():
     def get_ID(self):
         request = self.WebClient.api_call("auth.test")
         if request['ok']:
-            print(request['user_id'])
             return request['user_id']
     
     def get_username(self, user_id):
