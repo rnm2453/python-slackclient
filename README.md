@@ -1,5 +1,5 @@
 # python-slackclient
-slack client v2.x implementation with python 3.7
+slack client v2.x implemetation with python 3.7
 Slack Bot Using Slack v2, Python And MySQl
 
 What Can The Following Bot Do:
@@ -11,8 +11,6 @@ What Can The Following Bot Do:
   5. Alter A Database
   6. And More if you want to :sunny:
   
-
-
 
 Setup:
 ======== 
@@ -56,13 +54,13 @@ This is a Slack v2.x Bot Project using the [Real Time Client(RTM)] API written b
     ssl_context = ssl_lib.create_default_context(cafile=certifi.where()) # Creates Connecton Object
     slack_token = os.environ["SLACK_BOT_TOKEN"] # Fetchs The Slack OAuth Token From The Enviormental Variables
     rtm_client = slack.RTMClient(token=slack_token, ssl=ssl_context) # Starts The Connection With The Bot's Credentials
-    rtm_client.start() # Requests Connection from the Web Api
+    rtm_client.start() # Requests Connection from the Web API
 
  ```
  
  ###### So what excactly is the Happening Here?.
- The Messy "\_\__main___" bit Allows The [Real Time Client(RTM)] to send a stream of events to the Web Api.
- This is the most complicated part and you dont need to fully understand it to continue creating your bot.
+ The Messy "\_\__main___" Allows The [Real Time Client(RTM)] to send a stream of events to the Web API.
+ This is the most complicated part and you dont need to fully understand it to create your own bot.
  After we setup the RTM connection to our app, we can use the RTM to listen to events.
  Each Event recives a payload, the payload contains all the data sent from the Web API.
  
@@ -78,11 +76,10 @@ After creating a database, installing myslq-connector, configuring xampp to work
 
         Attributes:
           host = 'your_host_name'
-            this project works only locally, there for it needs to be 'localhost'
           root = 'root'
           passw = 
-            by defualt there is no password
-          db = 'your database name'"""
+            no password by default
+          db = 'your database name' """
 
         self.host = host
         self.root = root
@@ -91,7 +88,7 @@ After creating a database, installing myslq-connector, configuring xampp to work
         self.conn = mysql.connector.connect(host = self.host, user = self.root, passwd = self.passwd, db = self.db)
         
 ```
-  The [Database Connection] link can help you find the values of each str in your computer
+  The [Database Connection] link can help you find the values of each argument for your computer to run the bot locally.
 
  
 How The Bot Works?
@@ -131,7 +128,6 @@ Purpose OF Each File
  * bot.py- find the bot username, id and connects everything to the WebClient
  * database.py- alters the database, you may need to change it depeneding on your database
  * message.py- a generic message constructor. No need to Change 
- *There is really nothing else in this project if you followed the installation tutorial already
  * 
  * To Create Messages with different layouts you need to create a new file and follow Slack's 'Message Block layout" page
  
